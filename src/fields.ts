@@ -29,7 +29,7 @@ export interface Config {
 
 export const DEFAULT_SOFT_CHECKS = "coverage|codecov|coveralls";
 // domerge risk-assessment comment (doinstruct/platform PR 6613).
-export const DEFAULT_BOT_AUTHOR = "^doinstruct-merge\\[bot\\]$";
+export const DEFAULT_BOT_AUTHOR = "^doinstruct-merge(\\[bot\\])?$"; // gh GraphQL drops the [bot] suffix
 export const DEFAULT_BOT_MARKER = "<!-- domerge:risk-assessment -->";
 export const DEFAULT_BOT_DECISION = "\\*\\*Decision:\\*\\*\\s*([A-Za-z][\\w-]*)";
 export const DEFAULT_BOT_SCORE = "\\*\\*Risk score:\\*\\*\\s*(\\d+)";

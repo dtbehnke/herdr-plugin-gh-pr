@@ -88,6 +88,11 @@ test("botVerdict renders decision word and score from the real domerge comment",
   expect(botText("blocked 57")).toBe("⚙blocked 57");
 });
 
+test("botVerdict accepts the bot login as gh reports it, without the [bot] suffix", () => {
+  const items = [{ author: { login: "doinstruct-merge" }, body: body("held — awaiting human review", 76), createdAt: "2026-10-07T00:00:00Z" }];
+  expect(botVerdict(items, cfg)).toBe("held 76");
+});
+
 test("botVerdict takes the latest marked comment, ignoring older, unmarked, and non-bot ones", () => {
   const items = [
     { author: BOT, body: body("blocked — x", 57), createdAt: "2026-10-01T00:00:00Z" },
