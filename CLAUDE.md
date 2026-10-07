@@ -21,8 +21,10 @@ See `docs/research/herdr-plugin-overlay.md` for the full capability research and
 - `herdr-plugin.toml` - manifest (events, action).
 - `bin/update-pr-status.ts` - executable entrypoint herdr invokes per event/action.
 - `src/label.ts` - pure label-composition logic (unit tested).
+- `src/fields.ts` - optional fields (config, soft CI, threads, bot verdict, unpushed), pure and unit tested.
 - `src/main.ts` - orchestration and IO (herdr/git/gh).
-- `tests/label.test.ts` - unit tests for the pure logic.
+- `tests/label.test.ts`, `tests/fields.test.ts` - unit tests for the pure logic.
+- `tests/main.test.ts` - end-to-end run with fake `herdr`, `git`, `gh` on PATH.
 
 ## Develop
 
