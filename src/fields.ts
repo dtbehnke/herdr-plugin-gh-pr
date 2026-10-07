@@ -32,7 +32,7 @@ export const DEFAULT_SOFT_CHECKS = "coverage|codecov|coveralls";
 export const DEFAULT_BOT_AUTHOR = "^doinstruct-merge(\\[bot\\])?$"; // gh GraphQL drops the [bot] suffix
 export const DEFAULT_BOT_MARKER = "<!-- domerge:risk-assessment -->";
 export const DEFAULT_BOT_DECISION = "\\*\\*Decision:\\*\\*\\s*([A-Za-z][\\w-]*)";
-export const DEFAULT_BOT_SCORE = "\\*\\*Risk score:\\*\\*\\s*(\\d+)";
+export const DEFAULT_BOT_SCORE = "\\*\\*Risk score:\\*\\*\\s*(\\d+)(?:\\s*/\\s*(\\d+))?";
 
 // Parse "ci, threads,bot" into known fields, keeping order, dropping unknown
 // names and duplicates. Empty or all-unknown input yields the default.
@@ -136,7 +136,7 @@ export interface BotCandidate {
   submittedAt?: string;
 }
 
-// "<decision> <score>" (e.g. "blocked 57") from the newest bot comment that
+// "<decision> <score>[/<max>]" (e.g. "blocked 57/100") from the newest bot comment that
 // carries the marker, or null when there is none. Either part may be missing;
 // a marked comment with neither yields "?".
 export function botVerdict(
@@ -149,7 +149,9 @@ export function botVerdict(
     .sort((a, b) => a.at.localeCompare(b.at));
   const latest = bots.at(-1);
   if (!latest) return null;
-  const parts = [latest.body.match(cfg.botDecision)?.[1], latest.body.match(cfg.botScore)?.[1]].filter(Boolean);
+  const score = latest.body.match(cfg.botScore);
+  const scoreText = score?.[1] ? (score[2] ? `${score[1]}/${score[2]}` : score[1]) : undefined;
+  const parts = [latest.body.match(cfg.botDecision)?.[1], scoreText].filter(Boolean);
   return parts.length > 0 ? parts.join(" ").toLowerCase() : "?";
 }
 

@@ -84,13 +84,13 @@ test("threadsText hides zero and null", () => {
 
 test("botVerdict renders decision word and score from the real domerge comment", () => {
   const items = [{ author: BOT, body: body("blocked — risk score above threshold", 57), createdAt: "2026-10-05T00:00:00Z" }];
-  expect(botVerdict(items, cfg)).toBe("blocked 57");
-  expect(botText("blocked 57")).toBe("⚙blocked 57");
+  expect(botVerdict(items, cfg)).toBe("blocked 57/100");
+  expect(botText("blocked 57/100")).toBe("⚙blocked 57/100");
 });
 
 test("botVerdict accepts the bot login as gh reports it, without the [bot] suffix", () => {
   const items = [{ author: { login: "doinstruct-merge" }, body: body("held — awaiting human review", 76), createdAt: "2026-10-07T00:00:00Z" }];
-  expect(botVerdict(items, cfg)).toBe("held 76");
+  expect(botVerdict(items, cfg)).toBe("held 76/100");
 });
 
 test("botVerdict takes the latest marked comment, ignoring older, unmarked, and non-bot ones", () => {
@@ -100,13 +100,13 @@ test("botVerdict takes the latest marked comment, ignoring older, unmarked, and 
     { author: BOT, body: "**Decision:** blocked\nno marker", createdAt: "2026-10-04T00:00:00Z" },
     { author: { login: "alice" }, body: body("blocked", 99), createdAt: "2026-10-05T00:00:00Z" },
   ];
-  expect(botVerdict(items, cfg)).toBe("allowed 12");
+  expect(botVerdict(items, cfg)).toBe("allowed 12/100");
 });
 
 test("botVerdict copes with a missing score, a missing decision, or neither", () => {
   const mk = (text: string) => [{ author: BOT, body: `${MARK}\n${text}`, createdAt: "1" }];
   expect(botVerdict(mk("**Decision:** approved"), cfg)).toBe("approved");
-  expect(botVerdict(mk("**Risk score:** 8 / 100"), cfg)).toBe("8");
+  expect(botVerdict(mk("**Risk score:** 8 / 100"), cfg)).toBe("8/100");
   expect(botVerdict(mk("hello"), cfg)).toBe("?");
 });
 

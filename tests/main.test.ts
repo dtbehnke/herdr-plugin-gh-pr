@@ -111,9 +111,9 @@ test("default config keeps the original label and clears the other field tokens"
 test("all four fields publish their own tokens and the ordered composite", async () => {
   const calls = await runPlugin({ GH_PR_FIELDS: "unpushed,threads,bot,ci" });
   expect(calls).toHaveLength(1);
-  expect(calls[0]).toContain("--token pr=#42 ↑2 ⚑2 ⚙blocked 57 ✓~");
+  expect(calls[0]).toContain("--token pr=#42 ↑2 ⚑2 ⚙blocked 57/100 ✓~");
   expect(calls[0]).toContain("--token pr_threads=⚑2");
-  expect(calls[0]).toContain("--token pr_bot=⚙blocked 57");
+  expect(calls[0]).toContain("--token pr_bot=⚙blocked 57/100");
   expect(calls[0]).toContain("--token pr_unpushed=↑2");
 });
 
